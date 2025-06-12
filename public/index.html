@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Auth</title>
+</head>
+<body>
+    <button id="googleLogin">Sign in with Google</button>
+    <div id="status"></div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsFEkjQC2LIwKLh-Xm2xH4B1i67MQ6Y50",
+            authDomain: "melofy-68f77.firebaseapp.com",
+            projectId: "melofy-68f77",
+            storageBucket: "melofy-68f77.firebasestorage.app",
+            messagingSenderId: "315994364968",
+            appId: "1:315994364968:web:0c6d938f275fe49d64291d",
+            measurementId: "G-Q70JWVWXN0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        document.getElementById('googleLogin').addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                // Force refresh to get a valid Firebase ID token
+                const idToken = await result.user.getIdToken(/* forceRefresh */ true);
+                console.log('Firebase ID Token:', idToken);
+                
+                const response = await fetch('http://localhost:3010/api/admin/login-firebase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: idToken })
+                });
+
+                const data = await response.json();
+                console.log('Login response:', data);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+import { BaseEntity } from "typeorm";
+import { AlbumEntity } from "./album.entity";
+import { UserEntity } from "./user.entity";
+import { PlaylistEntity } from "./playlist.entity";
+import { ArtistEntity } from "./artists.entity";
+import { RadioStationEntity } from "./radio-session.entity";
+import { CommentEntity } from "./Comment.entity";
+export declare class SongEntity extends BaseEntity {
+    id: number;
+    title: string;
+    description: string;
+    coverImageUrl: string;
+    duration: number;
+    playCount: number;
+    trackNumber: number;
+    discNumber: number;
+    lyrics: string;
+    isExplicit: boolean;
+    isPublic: boolean;
+    audioUrl: string;
+    previewUrl: string;
+    artists: ArtistEntity[];
+    album: AlbumEntity;
+    comment: CommentEntity;
+    likedByUsers: UserEntity[];
+    playlists: PlaylistEntity[];
+    radioStations: RadioStationEntity[];
+    uploadedBy: UserEntity;
+    createdAt: Date;
+    updatedAt: Date;
+}
